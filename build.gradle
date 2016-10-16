@@ -3,12 +3,33 @@ version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
 
-sourceCompatibility = 1.5
+sourceCompatibility = 1.7
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
+    compile 'org.springframework:spring-context:4.3.3.RELEASE'
+    compile 'org.springframework:spring-aspects:4.3.3.RELEASE'
+
+    // Logging dependencies
+    compile 'log4j:log4j:1.2.17'
+    compile 'org.slf4j:slf4j-api:1.7.5'
+    compile 'org.slf4j:slf4j-log4j12:1.7.5'
+
+
+    //Utils
+    compile('joda-time:joda-time:2.9.4')
+    compile('com.github.rholder:guava-retrying:2.0.0')
+
+    // https://mvnrepository.com/artifact/org.mockito/mockito-all
+    compile group: 'org.mockito', name: 'mockito-all', version: '1.9.5'
+
+
+    testCompile("junit:junit")
+    testCompile("org.hamcrest:hamcrest-core")
+    testCompile('org.unitils:unitils-core:3.4.2')
+
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
