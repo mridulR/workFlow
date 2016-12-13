@@ -5,6 +5,7 @@ import com.github.rholder.retry.RetryException;
 import com.github.rholder.retry.Retryer;
 
 import com.mrdl.workflow.WorkFlowContext;
+import com.mrdl.workflow.retryer.WorkFlowRetryer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +23,7 @@ public abstract class DataLoadWorkFlow {
     return workFlowContext;
   }
 
-  public abstract DataLoadRetryer getDataLoadRetryer();
+  public abstract WorkFlowRetryer getDataLoadRetryer();
 
   public abstract WorkFlowStage getWorkFlowStage();
 

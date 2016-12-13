@@ -1,20 +1,22 @@
-package com.mrdl.workflow.stage;
+package com.mrdl.workflow.retryer;
 
 
 import com.github.rholder.retry.Retryer;
 import com.github.rholder.retry.RetryerBuilder;
 import com.github.rholder.retry.StopStrategies;
 import com.github.rholder.retry.WaitStrategies;
+import com.mrdl.workflow.stage.RetryIngestionException;
+import com.mrdl.workflow.stage.StateExecutionResponse;
 
 import java.util.concurrent.TimeUnit;
 
-public class DataLoadRetryer {
+public class WorkFlowRetryer {
 
   private int multiplier;
   private int maximumTime;
   private int attemptNumber;
 
-  public DataLoadRetryer(int multiplier, int attemptNumber, int maximumTime) {
+  public WorkFlowRetryer(int multiplier, int attemptNumber, int maximumTime) {
     this.multiplier = multiplier;
     this.attemptNumber = attemptNumber;
     this.maximumTime = maximumTime;

@@ -12,6 +12,7 @@ import com.github.rholder.retry.StopStrategies;
 import com.github.rholder.retry.WaitStrategies;
 
 import com.mrdl.workflow.WorkFlowContext;
+import com.mrdl.workflow.retryer.WorkFlowRetryer;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.aop.aspectj.annotation.AspectJProxyFactory;
@@ -27,18 +28,18 @@ public class DataLoadWorkFlowTest {
   private DataLoadWorkFlow dataLoadWorkFlow;
 
   private WorkFlowContext workFlowContext;
-  private DataLoadRetryer dataLoadRetryer;
+  private WorkFlowRetryer workFlowRetryer;
   private WorkFlowStage workFlowStage;
 
   @Before
   public void setUp() {
     workFlowContext = mock(WorkFlowContext.class);
     when(workFlowContext.getDataBatchId()).thenReturn(BATCH_ID);
-    dataLoadRetryer = mock(DataLoadRetryer.class);
+    workFlowRetryer = mock(WorkFlowRetryer.class);
     dataLoadWorkFlow = new DataLoadWorkFlow() {
       @Override
-      public DataLoadRetryer getDataLoadRetryer() {
-        return dataLoadRetryer;
+      public WorkFlowRetryer getDataLoadRetryer() {
+        return workFlowRetryer;
       }
 
       @Override
@@ -52,7 +53,7 @@ public class DataLoadWorkFlowTest {
         .withWaitStrategy(WaitStrategies.fibonacciWait(100, 3, TimeUnit.MINUTES))
         .withStopStrategy(StopStrategies.stopAfterAttempt(3))
         .build();
-    when(dataLoadRetryer.getRetryer()).thenReturn(retryer);
+    when(workFlowRetryer.getRetryer()).thenReturn(retryer);
   }
 
   @Test
