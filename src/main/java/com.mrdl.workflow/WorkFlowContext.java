@@ -1,11 +1,11 @@
 package com.mrdl.workflow;
 
-public class DataIngestionRequest {
+public class WorkFlowContext {
 
   private String dataBatchId;
   private Location fileLocation;
 
-  public DataIngestionRequest(Builder builder) {
+  public WorkFlowContext(Builder builder) {
     this.dataBatchId = builder.dataBatchId;
     this.fileLocation = builder.fileLocation;
   }
@@ -39,8 +39,8 @@ public class DataIngestionRequest {
       return this;
     }
 
-    public DataIngestionRequest build() {
-      return new DataIngestionRequest(this);
+    public WorkFlowContext build() {
+      return new WorkFlowContext(this);
     }
   }
 }

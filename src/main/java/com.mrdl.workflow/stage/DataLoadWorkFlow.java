@@ -4,7 +4,7 @@ package com.mrdl.workflow.stage;
 import com.github.rholder.retry.RetryException;
 import com.github.rholder.retry.Retryer;
 
-import com.mrdl.workflow.DataIngestionRequest;
+import com.mrdl.workflow.WorkFlowContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,18 +16,18 @@ public abstract class DataLoadWorkFlow {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(DataLoadWorkFlow.class);
 
-  private DataIngestionRequest dataIngestionRequest;
+  private WorkFlowContext workFlowContext;
 
-  public final DataIngestionRequest getDataIngestionRequest() {
-    return dataIngestionRequest;
+  public final WorkFlowContext getWorkFlowContext() {
+    return workFlowContext;
   }
 
   public abstract DataLoadRetryer getDataLoadRetryer();
 
   public abstract WorkFlowStage getWorkFlowStage();
 
-  public final DataLoadResponse run(DataIngestionRequest dataIngestionRequest) {
-    setDataIngestionRequest(dataIngestionRequest);
+  public final DataLoadResponse run(WorkFlowContext workFlowContext) {
+    setWorkFlowContext(workFlowContext);
     final WorkFlowStage workFlowStage = getWorkFlowStage();
 
     try {
@@ -38,7 +38,7 @@ public abstract class DataLoadWorkFlow {
       retryer.call(getPersistCallable(workFlowStage));
     } catch (ExecutionException | RetryException ex) {
       LOGGER.error(
-          "Exception occurred while ingesting data with batchId {}.", getDataIngestionRequest().getDataBatchId(), ex);
+          "Exception occurred while ingesting data with batchId {}.", getWorkFlowContext().getDataBatchId(), ex);
       return buildDataLoadErrorResponse(workFlowStage.getExecutionStatusMap());
     }
     return buildDataLoadResponse(workFlowStage.getExecutionStatusMap());
@@ -46,7 +46,7 @@ public abstract class DataLoadWorkFlow {
 
   private DataLoadResponse buildDataLoadErrorResponse(Map<String, StateExecutionStatus> statusMap) {
     DataLoadResponse.Builder builder = DataLoadResponse.builder()
-        .withDataLoadBatchId(getDataIngestionRequest().getDataBatchId())
+        .withDataLoadBatchId(getWorkFlowContext().getDataBatchId())
         .withStatus(Status.ABORTED);
     for (Map.Entry<String, StateExecutionStatus> entry : statusMap.entrySet()) {
       builder.withStateStatus(entry.getKey(), entry.getValue());
@@ -90,14 +90,14 @@ public abstract class DataLoadWorkFlow {
     };
   }
 
-  private void setDataIngestionRequest(DataIngestionRequest dataIngestionRequest) {
-    this.dataIngestionRequest = dataIngestionRequest;
+  private void setWorkFlowContext(WorkFlowContext workFlowContext) {
+    this.workFlowContext = workFlowContext;
   }
 
   private DataLoadResponse buildDataLoadResponse(Map<String, StateExecutionStatus> statusMap) {
     Status status = Status.OK;
     DataLoadResponse.Builder builder = DataLoadResponse.builder()
-        .withDataLoadBatchId(dataIngestionRequest.getDataBatchId());
+        .withDataLoadBatchId(workFlowContext.getDataBatchId());
     for (Map.Entry<String, StateExecutionStatus> entry : statusMap.entrySet()) {
       builder.withStateStatus(entry.getKey(), entry.getValue());
       if (entry.getValue().getStatus() != Status.OK) {

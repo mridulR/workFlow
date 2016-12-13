@@ -7,7 +7,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
-import com.mrdl.workflow.DataIngestionRequest;
+import com.mrdl.workflow.WorkFlowContext;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.aop.aspectj.annotation.AspectJProxyFactory;
@@ -141,8 +141,8 @@ public class DataLoaderExecutionMonitorTest {
   //Negative test
   @Test
   public void when_getExecutionStatusMapIsCalled_TimeKeeperShouldNotBeExecuted() {
-    DataIngestionRequest dataIngestionRequest = mock(DataIngestionRequest.class);
-    when(dataIngestionRequest.getDataBatchId()).thenReturn("batchId");
+    WorkFlowContext workFlowContext = mock(WorkFlowContext.class);
+    when(workFlowContext.getDataBatchId()).thenReturn("batchId");
     workFlowStageAspectAwareProxy(workFlowStage).getExecutionStatusMap();
 
     assertThat(workFlowStage.getAttemptForState("getExecutionStatusMap"), is(-1));

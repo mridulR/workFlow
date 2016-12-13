@@ -11,7 +11,7 @@ import com.github.rholder.retry.RetryerBuilder;
 import com.github.rholder.retry.StopStrategies;
 import com.github.rholder.retry.WaitStrategies;
 
-import com.mrdl.workflow.DataIngestionRequest;
+import com.mrdl.workflow.WorkFlowContext;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.aop.aspectj.annotation.AspectJProxyFactory;
@@ -26,14 +26,14 @@ public class DataLoadWorkFlowTest {
 
   private DataLoadWorkFlow dataLoadWorkFlow;
 
-  private DataIngestionRequest dataIngestionRequest;
+  private WorkFlowContext workFlowContext;
   private DataLoadRetryer dataLoadRetryer;
   private WorkFlowStage workFlowStage;
 
   @Before
   public void setUp() {
-    dataIngestionRequest = mock(DataIngestionRequest.class);
-    when(dataIngestionRequest.getDataBatchId()).thenReturn(BATCH_ID);
+    workFlowContext = mock(WorkFlowContext.class);
+    when(workFlowContext.getDataBatchId()).thenReturn(BATCH_ID);
     dataLoadRetryer = mock(DataLoadRetryer.class);
     dataLoadWorkFlow = new DataLoadWorkFlow() {
       @Override
@@ -80,7 +80,7 @@ public class DataLoadWorkFlowTest {
       }
     };
 
-    DataLoadResponse response = dataLoadWorkFlow.run(dataIngestionRequest);
+    DataLoadResponse response = dataLoadWorkFlow.run(workFlowContext);
 
     assertThat(response.getDataLoadBatchId(), is(BATCH_ID));
     assertThat(response.getStatus(), is(Status.OK));
@@ -119,7 +119,7 @@ public class DataLoadWorkFlowTest {
       }
     };
 
-    DataLoadResponse response = dataLoadWorkFlow.run(dataIngestionRequest);
+    DataLoadResponse response = dataLoadWorkFlow.run(workFlowContext);
 
     assertThat(response.getDataLoadBatchId(), is(BATCH_ID));
     assertThat(response.getStatus(), is(Status.ABORTED));
@@ -155,7 +155,7 @@ public class DataLoadWorkFlowTest {
       }
     };
 
-    DataLoadResponse response = dataLoadWorkFlow.run(dataIngestionRequest);
+    DataLoadResponse response = dataLoadWorkFlow.run(workFlowContext);
 
     assertThat(response.getDataLoadBatchId(), is(BATCH_ID));
     assertThat(response.getStatus(), is(Status.ABORTED));
@@ -198,7 +198,7 @@ public class DataLoadWorkFlowTest {
       }
     };
 
-    DataLoadResponse response = dataLoadWorkFlow.run(dataIngestionRequest);
+    DataLoadResponse response = dataLoadWorkFlow.run(workFlowContext);
 
     assertThat(response.getDataLoadBatchId(), is(BATCH_ID));
     assertThat(response.getStatus(), is(Status.OK));
