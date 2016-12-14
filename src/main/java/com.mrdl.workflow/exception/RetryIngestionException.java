@@ -1,4 +1,4 @@
-package com.mrdl.workflow.stage;
+package com.mrdl.workflow.exception;
 
 public class RetryIngestionException extends RuntimeException {
 

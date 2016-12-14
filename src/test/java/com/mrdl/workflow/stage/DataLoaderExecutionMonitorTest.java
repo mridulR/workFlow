@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 
 
 import com.mrdl.workflow.WorkFlowContext;
+import com.mrdl.workflow.exception.RetryIngestionException;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.aop.aspectj.annotation.AspectJProxyFactory;

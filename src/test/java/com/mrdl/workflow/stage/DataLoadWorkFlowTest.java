@@ -12,6 +12,8 @@ import com.github.rholder.retry.StopStrategies;
 import com.github.rholder.retry.WaitStrategies;
 
 import com.mrdl.workflow.WorkFlowContext;
+import com.mrdl.workflow.exception.RetryExhaustIngestionException;
+import com.mrdl.workflow.exception.RetryIngestionException;
 import com.mrdl.workflow.retryer.WorkFlowRetryer;
 import org.junit.Before;
 import org.junit.Test;

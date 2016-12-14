@@ -5,7 +5,7 @@ import com.github.rholder.retry.Retryer;
 import com.github.rholder.retry.RetryerBuilder;
 import com.github.rholder.retry.StopStrategies;
 import com.github.rholder.retry.WaitStrategies;
-import com.mrdl.workflow.stage.RetryIngestionException;
+import com.mrdl.workflow.exception.RetryIngestionException;
 import com.mrdl.workflow.stage.StateExecutionResponse;
 
 import java.util.concurrent.TimeUnit;

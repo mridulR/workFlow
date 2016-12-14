@@ -9,7 +9,7 @@ import static org.mockito.Mockito.when;
 import com.github.rholder.retry.RetryException;
 import com.github.rholder.retry.Retryer;
 
-import com.mrdl.workflow.stage.RetryIngestionException;
+import com.mrdl.workflow.exception.RetryIngestionException;
 import com.mrdl.workflow.stage.StateExecutionResponse;
 import org.junit.Rule;
 import org.junit.Test;
