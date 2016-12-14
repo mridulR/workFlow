@@ -17,7 +17,7 @@ import org.junit.rules.ExpectedException;
 
 import java.util.concurrent.Callable;
 
-public class WorkFlowRetryerTest {
+public class DefaultWorkFlowRetryerTest {
 
   private static final int MULTIPLIER = 100;
   private static final int ATTEMPT_NUMBER = 3;
@@ -28,12 +28,12 @@ public class WorkFlowRetryerTest {
   public ExpectedException expectedException = ExpectedException.none();
   // CSON: Visibility Modifier
 
-  private WorkFlowRetryer workFlowRetryer = new WorkFlowRetryer(MULTIPLIER, ATTEMPT_NUMBER, MAXIMUM_TIME);
+  private DefaultWorkFlowRetryer defaultWorkFlowRetryer = new DefaultWorkFlowRetryer(MULTIPLIER, ATTEMPT_NUMBER, MAXIMUM_TIME);
 
 
   @Test
   public void getRetryer_whenMethodInvoked_thenReturnRetryer() {
-    Retryer<StateExecutionResponse> retryer = workFlowRetryer.getRetryer();
+    Retryer<StateExecutionResponse> retryer = defaultWorkFlowRetryer.getRetryer();
 
     assertThat(retryer != null, is(true));
   }
@@ -48,8 +48,8 @@ public class WorkFlowRetryerTest {
         .thenThrow(new RetryIngestionException("FirstTime"))
         .thenThrow(new RetryIngestionException("SecondTime"))
         .thenThrow(new RetryIngestionException("ThirdTime"));
-    workFlowRetryer.setAttemptNumber(2);
+    defaultWorkFlowRetryer.setAttemptNumber(2);
 
-    workFlowRetryer.getRetryer().call(mockStageCallable);
+    defaultWorkFlowRetryer.getRetryer().call(mockStageCallable);
   }
 }

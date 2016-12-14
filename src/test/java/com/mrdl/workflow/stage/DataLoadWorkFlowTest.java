@@ -14,6 +14,7 @@ import com.github.rholder.retry.WaitStrategies;
 import com.mrdl.workflow.WorkFlowContext;
 import com.mrdl.workflow.exception.RetryExhaustIngestionException;
 import com.mrdl.workflow.exception.RetryIngestionException;
+import com.mrdl.workflow.retryer.DefaultWorkFlowRetryer;
 import com.mrdl.workflow.retryer.WorkFlowRetryer;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,18 +31,18 @@ public class DataLoadWorkFlowTest {
   private DataLoadWorkFlow dataLoadWorkFlow;
 
   private WorkFlowContext workFlowContext;
-  private WorkFlowRetryer workFlowRetryer;
+  private WorkFlowRetryer defaultWorkFlowRetryer;
   private WorkFlowStage workFlowStage;
 
   @Before
   public void setUp() {
     workFlowContext = mock(WorkFlowContext.class);
     when(workFlowContext.getDataBatchId()).thenReturn(BATCH_ID);
-    workFlowRetryer = mock(WorkFlowRetryer.class);
+    defaultWorkFlowRetryer = mock(DefaultWorkFlowRetryer.class);
     dataLoadWorkFlow = new DataLoadWorkFlow() {
       @Override
       public WorkFlowRetryer getDataLoadRetryer() {
-        return workFlowRetryer;
+        return defaultWorkFlowRetryer;
       }
 
       @Override
@@ -55,7 +56,7 @@ public class DataLoadWorkFlowTest {
         .withWaitStrategy(WaitStrategies.fibonacciWait(100, 3, TimeUnit.MINUTES))
         .withStopStrategy(StopStrategies.stopAfterAttempt(3))
         .build();
-    when(workFlowRetryer.getRetryer()).thenReturn(retryer);
+    when(defaultWorkFlowRetryer.getRetryer()).thenReturn(retryer);
   }
 
   @Test
