@@ -35,6 +35,7 @@ dependencies {
     //Utils
     compile('joda-time:joda-time:2.9.4')
     compile('com.github.rholder:guava-retrying:2.0.0')
+    compile('org.apache.commons:commons-lang3:3.0')
 
     // https://mvnrepository.com/artifact/org.mockito/mockito-all
     compile group: 'org.mockito', name: 'mockito-all', version: '1.9.5'

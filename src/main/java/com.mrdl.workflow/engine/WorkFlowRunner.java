@@ -15,15 +15,15 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
-public abstract class WorkFlowRunner {
+public abstract class WorkFlowRunner<T extends WorkFlowContext> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WorkFlowRunner.class);
 
     private Map<String, StateExecutionStatus> executionStatusMap = new LinkedHashMap<>();
 
-    private WorkFlowContext workFlowContext;
+    private T workFlowContext;
 
-    public final WorkFlowContext getWorkFlowContext() {
+    public final T getWorkFlowContext() {
         return workFlowContext;
     }
 
@@ -31,7 +31,7 @@ public abstract class WorkFlowRunner {
 
     public abstract WorkFlow getWorkFlow();
 
-    public final DataLoadResponse run(WorkFlowContext workFlowContext) {
+    public final DataLoadResponse run(T workFlowContext) {
         setWorkFlowContext(workFlowContext);
         final WorkFlow workFlow = getWorkFlow();
         Retryer<StateExecutionResponse> retryer = getDataLoadRetryer().getRetryer();
@@ -40,7 +40,7 @@ public abstract class WorkFlowRunner {
                 retryer.call(workFlowStage);
             } catch (ExecutionException | RetryException ex) {
                 LOGGER.error("Exception occurred while ingesting data with batchId {}.",
-                        getWorkFlowContext().getDataBatchId(), ex);
+                             getWorkFlowContext().getBatchId(), ex);
                 return buildDataLoadErrorResponse(executionStatusMap);
             } finally {
                 executionStatusMap.put(workFlowStage.getStageName(), workFlowStage.getStateExecutionStatus());
@@ -51,7 +51,7 @@ public abstract class WorkFlowRunner {
 
     private DataLoadResponse buildDataLoadErrorResponse(Map<String, StateExecutionStatus> statusMap) {
         DataLoadResponse.Builder builder = DataLoadResponse.builder()
-                .withDataLoadBatchId(getWorkFlowContext().getDataBatchId())
+                .withDataLoadBatchId(getWorkFlowContext().getBatchId())
                 .withStatus(Status.ABORTED);
         for (Map.Entry<String, StateExecutionStatus> entry : statusMap.entrySet()) {
             builder.withStateStatus(entry.getKey(), entry.getValue());
@@ -59,14 +59,14 @@ public abstract class WorkFlowRunner {
         return builder.build();
     }
 
-    private void setWorkFlowContext(WorkFlowContext workFlowContext) {
+    private void setWorkFlowContext(T workFlowContext) {
         this.workFlowContext = workFlowContext;
     }
 
     private DataLoadResponse buildDataLoadResponse(Map<String, StateExecutionStatus> statusMap) {
         Status status = Status.OK;
         DataLoadResponse.Builder builder = DataLoadResponse.builder()
-                .withDataLoadBatchId(workFlowContext.getDataBatchId());
+                .withDataLoadBatchId(workFlowContext.getBatchId());
         for (Map.Entry<String, StateExecutionStatus> entry : statusMap.entrySet()) {
             builder.withStateStatus(entry.getKey(), entry.getValue());
             if (entry.getValue().getStatus() != Status.OK) {

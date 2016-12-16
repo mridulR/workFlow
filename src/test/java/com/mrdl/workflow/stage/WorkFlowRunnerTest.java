@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -37,7 +36,7 @@ public class WorkFlowRunnerTest {
     @Before
     public void setUp() {
         workFlowContext = mock(WorkFlowContext.class);
-        when(workFlowContext.getDataBatchId()).thenReturn(BATCH_ID);
+        when(workFlowContext.getBatchId()).thenReturn(BATCH_ID);
         workFlowRetryer = mock(DefaultWorkFlowRetryer.class);
 
         Retryer<StateExecutionResponse> retryer = RetryerBuilder.<StateExecutionResponse>newBuilder()

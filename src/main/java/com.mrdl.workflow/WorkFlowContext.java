@@ -1,46 +1,16 @@
 package com.mrdl.workflow;
 
+import org.apache.commons.lang3.RandomStringUtils;
+
 public class WorkFlowContext {
 
-  private String dataBatchId;
-  private Location fileLocation;
+  private String batchId = RandomStringUtils.randomAlphanumeric(5);
 
-  public WorkFlowContext(Builder builder) {
-    this.dataBatchId = builder.dataBatchId;
-    this.fileLocation = builder.fileLocation;
+  public String getBatchId() {
+    return batchId;
   }
 
-  public static Builder builder() {
-    return new Builder();
-  }
-
-  public String getDataBatchId() {
-    return dataBatchId;
-  }
-
-  public Location getFileLocation() {
-    return fileLocation;
-  }
-
-  public static final class Builder {
-
-    private String dataBatchId;
-    private Location fileLocation;
-
-    public Builder() {}
-
-    public Builder withDataBatchId(String val) {
-      dataBatchId = val;
-      return this;
-    }
-
-    public Builder withFileLocation(Location fileLocation) {
-      this.fileLocation = fileLocation;
-      return this;
-    }
-
-    public WorkFlowContext build() {
-      return new WorkFlowContext(this);
-    }
+  public void setBatchId(String batchId) {
+    this.batchId = batchId;
   }
 }
