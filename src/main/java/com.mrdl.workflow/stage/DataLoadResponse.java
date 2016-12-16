@@ -1,5 +1,7 @@
 package com.mrdl.workflow.stage;
 
+import com.mrdl.workflow.engine.StateExecutionStatus;
+
 import java.util.HashMap;
 import java.util.Map;
 

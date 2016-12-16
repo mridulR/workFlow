@@ -1,5 +1,7 @@
-package com.mrdl.workflow.stage;
+package com.mrdl.workflow.engine;
 
+import com.mrdl.workflow.stage.StateExecutionResponse;
+import com.mrdl.workflow.stage.Status;
 import org.joda.time.DateTime;
 
 public final class StateExecutionStatus {
