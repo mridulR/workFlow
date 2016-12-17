@@ -5,7 +5,8 @@ public enum ErrorCode {
   ACCESS_DENIED("Access_Denied"),
   INVALID_HEADERS("Invalid_Headers"),
   NULL_VALUES("Null_Values"),
-  RETRY_EXCEPTION("Retry_Exception");
+  RETRY_EXCEPTION("Retry_Exception"),
+  OTHER("Some other exception");
 
   private String description;
 
