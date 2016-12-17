@@ -3,9 +3,8 @@ This code base can be used as a general purpose workflow in any spring project.
 
 Steps to use it in your project:
 1. Clone the code base.
-2. Remove Application.java as it is used for booting spring.
-3. Create custom stage class by extending WorkFlowStage.
-4. Use work flow execution engine to run with retry.
+2. Create custom stage class by extending WorkFlowStage.
+3. Use work flow execution engine to run with retry.
 
 Steps to build jar out of source code:
 1. Run gradle clean fatjar.
